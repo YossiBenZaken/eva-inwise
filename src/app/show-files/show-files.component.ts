@@ -1,0 +1,206 @@
+import { Traces } from './../models/Search.model';
+import { FileName } from './../models/Files.model';
+import { AppService } from './../app.service';
+import { Component, OnInit } from '@angular/core';
+import * as bytes from 'bytes';
+@Component({
+  selector: 'app-show-files',
+  templateUrl: './show-files.component.html',
+  styleUrls: ['./show-files.component.scss'],
+})
+export class ShowFilesComponent implements OnInit {
+  files: FileName[] = [];
+  jobList!: Traces[];
+  message: string = '';
+  isVisible: boolean = false;
+  isDeleteVisible: boolean = false;
+  currentUser!: string;
+  popupVisible: boolean = false;
+  splitVisible: boolean = false;
+  emailButtonOptions: any;
+  splitButtonOptions: any;
+  moreButtonOptions: any;
+  typesOfSend = ['אימייל', 'סמס'];
+  selectedType: string = '';
+  emails: { email: string }[] = [
+    {
+      email: '',
+    },
+  ];
+  sending: boolean = false;
+  currentFile!: string;
+  sendTime = [
+    {
+      name: '5 דקות',
+      id: 0,
+      value: '5',
+    },
+    { name: '10 דקות', id: 1, value: '10' },
+    { name: 'רבע שעה', id: 2, value: '15' },
+    { name: 'חצי שעה', id: 3, value: '30' },
+  ];
+  selectedTime = '';
+  selectedStart = 15;
+  selectedEnd = 15;
+  splitFile = 0;
+  selectedFile = ''
+  constructor(private _appService: AppService) {
+    const that = this;
+    this.emailButtonOptions = {
+      icon: 'email',
+      text: 'לשלוח טסט',
+      onClick(e: any) {
+        if (confirm('יש לאשר כדי לשלוח טסט')) {
+          that.sendTest();
+        }
+      },
+    };
+    this.splitButtonOptions = {
+      icon: '',
+      text: 'שלח לפיצול',
+      onClick: (e: any) => {
+        this._appService.changeEnv(this.selectedStart,this.selectedEnd,this.sendTime[Number(this.selectedTime)].value).subscribe(() => {
+          this.splitVisible = false;
+          alert('אל תשכח/י להפעיל בהגדרות את התהליך הרצוי')
+          this._appService.splitFile(
+            this.sendTime[Number(this.selectedTime)].value,
+            this.splitFile,
+            this.selectedFile
+          ).subscribe(() => {
+            this.getFiles();
+          });
+        })
+      },
+    };
+    this.moreButtonOptions = {
+      icon: 'plus',
+      text: 'הוספת אימייל למשלוח',
+      onClick(e: any) {
+        that.emails.push({
+          email: '',
+        });
+      },
+    };
+  }
+  ngOnInit(): void {
+    if (localStorage.getItem('currentUser')) {
+      this.currentUser = localStorage.getItem('currentUser')!;
+      this.getFiles();
+      this.getSearch();
+    }
+  }
+  calculateCellValue(data: any) {
+    return bytes(data.size);
+  }
+  sendFile(fileName: string) {
+    if (confirm('יש לאשר כדי לשלוח קובץ זה')) {
+      this._appService.sendFile(fileName, this.currentUser).subscribe((res) => {
+        this.isVisible = true;
+        this.files = res.files;
+      });
+    }
+  }
+  deleteFile(fileName: string) {
+    if (confirm('יש לאשר כדי למחוק קובץ זה')) {
+      this._appService
+        .deleteFile(fileName, this.currentUser)
+        .subscribe((res) => {
+          this.isDeleteVisible = true;
+          this.getFiles();
+        });
+    }
+  }
+  getFiles() {
+    this._appService.getFiles(this.currentUser).subscribe((res) => {
+      this.files = res.files;
+    });
+  }
+  getSearch() {
+    this._appService.jobList().subscribe((res) => {
+      this.jobList = res.traces.filter((trace) => trace.customJobId != '' || (trace.workflowReference.id == 'TWVpLUF2aXZpbS9NQSBJbnZvaWNlIFB1c2ggTkVX')).map(trace => {
+        if(trace.customJobId == '') {
+          trace.customJobId = trace.workflowReference.name;
+        }
+        return trace
+      });
+    });
+  }
+  sendTestPopup(data: FileName) {
+    this.currentFile = data.name;
+    this.popupVisible = true;
+  }
+  sendExample(data: FileName) {
+    if (confirm('הדוגמאות ישלחו בדקות הקרובות למייל שלך')) {
+      this._appService
+        .sendExample({
+          user: this.currentUser,
+          fileName: data.name,
+        })
+        .subscribe(() => {});
+    }
+  }
+  fixDate(data: Traces): Date {
+    return new Date(data.started.dateTime);
+  }
+  sendTest() {
+    let date = new Date();
+    let fileName = this.currentFile;
+    let request = {
+      fileName,
+      newFileName:
+        fileName.split('.7z')[0] +
+        '_test' +
+        date.getHours() +
+        date.getMinutes() +
+        date.getSeconds() +
+        '.7z',
+      user: this.currentUser,
+      emails: this.emails,
+    };
+    this.sending = true;
+    this._appService
+      .sendTest(request, this.selectedType == 'אימייל' ? '1' : '2')
+      .subscribe((res) => {
+        this.isVisible = true;
+        this.popupVisible = false;
+        this.sending = false;
+        this.emails = [
+          {
+            email: '',
+          },
+        ];
+        this.selectedType = '';
+      });
+  }
+  isValidForm() {
+    return this.emails.filter((e) => e.email != '').length > 0;
+  }
+  openLink(data: Traces) {
+    window.open('https://ol-bk-app1:30600/#/jobDetail/' + data.id, '_blank');
+  }
+  onRowPrepared(e: any) {
+    if (e.rowType === 'data') {
+      switch (e.data.status) {
+        case 'Failed':
+          e.rowElement.style.backgroundColor = '#e34243';
+          e.rowElement.style.color = '#fff';
+          e.rowElement.className = e.rowElement.className.replace(
+            'dx-row-alt',
+            ''
+          );
+          break;
+        case 'Completed':
+          e.rowElement.style.backgroundColor = '#9AD232';
+          e.rowElement.className = e.rowElement.className.replace(
+            'dx-row-alt',
+            ''
+          );
+          break;
+      }
+    }
+  }
+  showSplitPopup(fileName: string) {
+    this.selectedFile = fileName;
+    this.splitVisible = true;
+  }
+}

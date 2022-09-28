@@ -1,0 +1,10 @@
+
+<div *ngIf="showCampaigns">
+  <div class="body" style="padding-bottom: 10px;">
+    <app-add-campaign [canAdded]="params.canAdd" [keys]="keys"></app-add-campaign>
+  </div>
+  <app-campaigns [canDelete]="params.canDelete" [canEdit]="params.canEdit" [keys]="keys"></app-campaigns>
+</div>
+<div *ngIf="showFiles">
+  <app-show-files></app-show-files>
+</div>

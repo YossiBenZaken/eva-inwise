@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="loginForm">
+      <p>
+        <dx-select-box [rtlEnabled]="true" #selectBox [items]="['eva', 'batel', 'anna', 'sari','innal','davidb','maria']"> </dx-select-box>
+      </p>
+      <p>
+        <dx-button
+            stylingMode="contained"
+            text="התחבר"
+            type="normal"
+            [width]="120"
+            (onClick)="onClick(selectBox.value)"
+          >
+          </dx-button>
+      </p>
+  </div>
+</div>

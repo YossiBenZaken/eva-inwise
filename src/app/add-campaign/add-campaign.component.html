@@ -1,0 +1,88 @@
+<div class="dx-rtl" *ngIf="canAdded">
+  <dx-radio-group
+    [items]="type"
+    layout="horizontal"
+    [value]="type[0]"
+    #radio
+  ></dx-radio-group>
+  <div class="row">
+    <div class="col-6">
+        <dx-text-box
+          [(value)]="campaign.oldCode"
+          labelMode="floating"
+          label="קוד ישן"
+        ></dx-text-box>
+        <dx-text-box
+          label="קוד חדש"
+          labelMode="floating"
+          [(value)]="campaign.newCode"
+        ></dx-text-box>
+    </div>
+    <div class="col-6">
+        <dx-text-box
+          label="מספר מכתב"
+          labelMode="floating"
+          [(value)]="campaign.letterName"
+        ></dx-text-box>
+        <dx-select-box
+          [dataSource]="keys"
+          displayExpr="Value"
+          valueExpr="Key"
+          [rtlEnabled]="true"
+          [searchEnabled]="true"
+          label="חשבון שולח"
+          [(value)]="campaign.apiKey"
+          labelMode="floating"
+        ></dx-select-box>
+    </div>
+  </div>
+  <div *ngIf="radio.value == 'אימייל'" class="row">
+    <div class="col-6">
+        <dx-text-box
+          label="שם שולח"
+          [(value)]="campaign.sender"
+          labelMode="floating"
+        ></dx-text-box>
+        <dx-text-box
+          [(value)]="campaign.subject"
+          label="נושא"
+          labelMode="floating"
+        ></dx-text-box>
+        <dx-select-box
+          style="margin-top: 10px"
+          [dataSource]="fields"
+          displayExpr="Value"
+          valueExpr="Key"
+          [rtlEnabled]="true"
+          width="160"
+          placeholder="שדה אישי"
+          (onValueChanged)="valueChange($event)"
+        >
+        </dx-select-box>
+    </div>
+    <div class="col-6">
+        <dx-text-box
+          label="אימייל"
+          labelMode="floating"
+          [(value)]="campaign.email"
+        ></dx-text-box>
+        <dx-text-box
+          label="כתובת חזרה"
+          labelMode="floating"
+          [(value)]="campaign.reply_to"
+        ></dx-text-box>
+    </div>
+  </div>
+  <div style="padding-top: 1em">
+    <dx-button
+      stylingMode="outlined"
+      text="הוסף"
+      icon="plus"
+      type="default"
+      (onClick)="click()"
+    >
+    </dx-button>
+  </div>
+</div>
+<dx-toast [(visible)]="isVisible" [type]="typeAlert" [message]="message">
+</dx-toast>

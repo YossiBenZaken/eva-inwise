@@ -1,0 +1,274 @@
+<dx-data-grid
+  [dataSource]="files"
+  keyExpr="name"
+  [focusedRowEnabled]="true"
+  [rtlEnabled]="true"
+  [height]="400"
+  [showBorders]="true"
+  [showRowLines]="true"
+  [rowAlternationEnabled]="true"
+  *ngIf="currentUser"
+>
+  <dxo-scrolling mode="infinite"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+  <dxi-column
+    caption=""
+    cellTemplate="sendBtns"
+    [allowFiltering]="false"
+    [width]="240"
+  >
+    <div *dxTemplate="let cell of 'sendBtns'" class="buttons">
+      <dx-button
+        text="שלח קובץ"
+        (onClick)="sendFile(cell.data.name)"
+      ></dx-button>
+      <dx-button
+        *ngIf="
+          (cell.data.name.includes('SMS') ||
+            cell.data.name.includes('Mails')) &&
+          cell.data.name.includes('.txt')
+        "
+        text="שלח לפיצול"
+        (onClick)="showSplitPopup(cell.data.name)"
+      ></dx-button>
+    </div>
+  </dxi-column>
+  <dxi-column
+    caption="גודל קובץ"
+    [calculateCellValue]="calculateCellValue"
+    [width]="140"
+  ></dxi-column>
+  <dxi-column
+    dataField="createdTime"
+    caption="נוצר"
+    dataType="datetime"
+    [width]="200"
+  ></dxi-column>
+  <dxi-column
+    caption=""
+    cellTemplate="deleteBtns"
+    [allowFiltering]="false"
+    [width]="300"
+  >
+    <div *dxTemplate="let cell of 'deleteBtns'" class="buttons">
+      <dx-button
+        icon="trash"
+        (onClick)="deleteFile(cell.data.name)"
+        type="danger"
+      ></dx-button>
+      <dx-button
+        text="שלח טסט"
+        (onClick)="sendTestPopup(cell.data)"
+      ></dx-button>
+      <dx-button
+        text="שלח דוגמאות"
+        (onClick)="sendExample(cell.data)"
+      ></dx-button>
+    </div>
+  </dxi-column>
+  <dxo-toolbar>
+    <dxi-item location="before">
+      <div *dxTemplate>
+        <dx-button icon="refresh" text="רענן קבצים" (onClick)="getFiles()">
+        </dx-button>
+      </div>
+    </dxi-item>
+  </dxo-toolbar>
+</dx-data-grid>
+<h3 style="text-align: center" class="mt-1">תהליכים</h3>
+<dx-data-grid
+  [dataSource]="jobList"
+  [focusedRowEnabled]="true"
+  keyExpr="id"
+  [rtlEnabled]="true"
+  [height]="400"
+  [showBorders]="true"
+  [showRowLines]="true"
+  [rowAlternationEnabled]="true"
+  class="mt-3"
+  (onRowPrepared)="onRowPrepared($event)"
+>
+  <dxo-scrolling mode="infinite"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxi-column dataField="customJobId" caption="שם קובץ"></dxi-column>
+  <dxi-column cellTemplate="statusJob" caption="סטטוס" [width]="200">
+    <div *dxTemplate="let cell of 'statusJob'" class="buttons">
+      {{
+        cell.data.status === "Processing"
+          ? "בתהליך"
+          : cell.data.status === "Completed"
+          ? "הושלם"
+          : "נכשל"
+      }}
+    </div>
+  </dxi-column>
+  <dxi-column
+    caption="זמן יצירה"
+    dataField="started.dateTime"
+    [width]="200"
+    dataType="datetime"
+  >
+  </dxi-column>
+  <dxi-column
+    caption=""
+    cellTemplate="infomationJob"
+    [allowFiltering]="false"
+    [width]="50"
+  >
+    <div *dxTemplate="let cell of 'infomationJob'" class="buttons">
+      <dx-button
+        icon="info"
+        (onClick)="openLink(cell.data)"
+        [type]="
+          cell.data.status == 'Failed'
+            ? 'danger'
+            : cell.data.status == 'Completed'
+            ? 'success'
+            : ''
+        "
+      ></dx-button>
+    </div>
+  </dxi-column>
+  <dxo-toolbar>
+    <dxi-item location="before">
+      <div *dxTemplate>
+        <dx-button icon="refresh" text="רענן תהליכים" (onClick)="getSearch()">
+        </dx-button>
+      </div>
+    </dxi-item>
+  </dxo-toolbar>
+</dx-data-grid>
+<dx-toast
+  [(visible)]="isVisible"
+  [rtlEnabled]="true"
+  type="success"
+  message="הקובץ נשלח בהצלחה"
+>
+</dx-toast>
+<dx-toast
+  [(visible)]="isDeleteVisible"
+  [rtlEnabled]="true"
+  type="error"
+  message="הקובץ נמחק בהצלחה"
+>
+</dx-toast>
+<dx-popup
+  [width]="400"
+  [height]="selectedType != '' ? 400 : 200"
+  [showTitle]="true"
+  [rtlEnabled]="true"
+  title="למי לשלוח את הטסט?"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="false"
+  [showCloseButton]="true"
+  container=".dx-viewport"
+  [(visible)]="popupVisible"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="center"
+    [options]="emailButtonOptions"
+    [disabled]="!isValidForm()"
+  ></dxi-toolbar-item>
+
+  <dxi-toolbar-item
+    *ngIf="emails.length < 3"
+    widget="dxButton"
+    toolbar="bottom"
+    location="center"
+    [options]="moreButtonOptions"
+  >
+  </dxi-toolbar-item>
+  <dxo-position at="center" my="center"> </dxo-position>
+  <div *dxTemplate="let data of 'content'">
+    <ng-container *ngIf="sending; else showEmails">
+      <dx-load-indicator height="60" width="60"></dx-load-indicator>
+    </ng-container>
+    <ng-template #showEmails>
+      <dx-radio-group
+        [items]="typesOfSend"
+        layout="horizontal"
+        [(value)]="selectedType"
+        #radio
+      ></dx-radio-group>
+      <ng-container *ngIf="radio.value != ''">
+        <div *ngFor="let email of emails; index as i">
+          <div class="dx-fieldset">
+            <div class="dx-field" style="display: flex">
+              <div class="dx-field-label">
+                {{ selectedType }} מס' {{ i + 1 }}
+              </div>
+              <div class="dx-field-value">
+                <dx-text-box
+                  [(value)]="email.email"
+                  [showClearButton]="true"
+                ></dx-text-box>
+              </div>
+              <dx-button
+                (onClick)="emails.splice(i, 1)"
+                icon="minus"
+                *ngIf="emails.length > 1"
+              ></dx-button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-template>
+  </div>
+</dx-popup>
+<dx-popup
+  [width]="350"
+  [height]="400"
+  [showTitle]="true"
+  [rtlEnabled]="true"
+  title="לכמה לפצל?"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="false"
+  [showCloseButton]="true"
+  container=".dx-viewport"
+  [(visible)]="splitVisible"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="center"
+    [options]="splitButtonOptions"
+  ></dxi-toolbar-item>
+  <dxo-position at="center" my="center"> </dxo-position>
+  <div *dxTemplate="let data of 'content'">
+    <dx-select-box
+      [searchEnabled]="true"
+      [dataSource]="sendTime"
+      [rtlEnabled]="true"
+      placeholder="כל כמה זמן להפיץ"
+      [(value)]="selectedTime"
+      valueExpr="id"
+      displayExpr="name"
+    ></dx-select-box>
+    <h4 style="text-align: center" class="mt-1">זמני הפצה</h4>
+    <div class="dx-field">
+      <div class="dx-field-value">
+        <h6>כמות פיצול</h6>
+        <dx-number-box
+          [(value)]="splitFile"
+        ></dx-number-box>
+        <h6>מהשעה</h6>
+        <dx-number-box
+          [(value)]="selectedStart"
+          [min]="8"
+          [max]="22"
+          [showSpinButtons]="true"
+        ></dx-number-box>
+        <h6>עד</h6>
+        <dx-number-box
+          [(value)]="selectedEnd"
+          [min]="selectedStart"
+          [max]="22"
+          [showSpinButtons]="true"
+        ></dx-number-box>
+      </div>
+    </div>
+  </div>
+</dx-popup>

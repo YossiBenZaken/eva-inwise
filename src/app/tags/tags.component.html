@@ -1,0 +1,123 @@
+<dx-select-box
+  #selectBox
+  [dataSource]="keys"
+  displayExpr="Value"
+  valueExpr="Key"
+  [rtlEnabled]="true"
+  [searchEnabled]="true"
+  label="חשבון שולח"
+  (onValueChanged)="getTags($event)"
+  labelMode="floating"
+></dx-select-box>
+<div style="padding: 20px 0" *ngIf="selectBox.value && !loadingTags">
+  <dx-button text="רענן תגיות" (onClick)="getTags(selectBox)"></dx-button>
+  <dx-data-grid
+    [dataSource]="tags"
+    keyExpr="tag"
+    [focusedRowEnabled]="true"
+    [showBorders]="true"
+    (onFocusedRowChanged)="onFocusedRowChanged($event)"
+    [height]="300"
+    [rtlEnabled]="true"
+    [showRowLines]="true"
+    [columnAutoWidth]="true"
+  >
+    <dxo-scrolling mode="infinite"></dxo-scrolling>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxi-column dataField="tag"></dxi-column>
+    <dxi-column dataField="apiKey" caption="חשבון שולח">
+      <dxo-lookup [dataSource]="keys" displayExpr="Value" valueExpr="Key">
+      </dxo-lookup>
+    </dxi-column>
+    <dxi-column
+      caption=""
+      cellTemplate="details"
+      [allowFiltering]="false"
+      [width]="200"
+    >
+      <div *dxTemplate="let cell of 'details'" class="buttons">
+        <dx-button icon="info" (onClick)="getDetails(cell.data)"></dx-button>
+        <dx-button
+          icon="textdocument"
+          text="פירוט"
+          (onClick)="showDetails(cell.data)"
+        ></dx-button>
+        <dx-button
+          icon="download"
+          type="success"
+          (onClick)="getReport(cell.data)"
+        ></dx-button>
+      </div>
+    </dxi-column>
+  </dx-data-grid>
+</div>
+<div
+  style="display: flex; justify-content: center; padding: 20px 0"
+  *ngIf="selectBox.value && loadingTags"
+>
+  <dx-load-indicator height="60" width="60"></dx-load-indicator>
+</div>
+<div
+  style="display: flex; justify-content: center; padding: 20px 0"
+  *ngIf="loading"
+>
+  <dx-load-indicator height="60" width="60"></dx-load-indicator>
+</div>
+<div style="padding: 20px 0" *ngIf="moreDetails && moreDetails.length > 0">
+  <dx-data-grid
+    [dataSource]="moreDetails"
+    keyExpr="transaction_id"
+    [showBorders]="true"
+    [showRowLines]="true"
+    [rowAlternationEnabled]="true"
+    [height]="300"
+    [rtlEnabled]="true"
+    [allowColumnResizing]="true"
+    [columnAutoWidth]="true"
+  >
+    <dxo-scrolling mode="infinite"></dxo-scrolling>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxi-column
+      dataField="send_at"
+      dataType="datetime"
+      caption="נשלח"
+    ></dxi-column>
+    <dxi-column dataField="sender" caption="מייל שולח"></dxi-column>
+    <dxi-column dataField="subject" caption="נושא"></dxi-column>
+    <dxi-column dataField="email" caption="אימייל"></dxi-column>
+    <dxi-column dataField="state" caption="סטטוס">
+      <dxo-lookup [dataSource]="state" displayExpr="value" valueExpr="key">
+      </dxo-lookup>
+    </dxi-column>
+    <dxi-column
+      dataField="opens_details[0].time_stamp"
+      dataType="datetime"
+      caption="נפתח"
+    ></dxi-column>
+  </dx-data-grid>
+</div>
+<div style="display: flex; justify-content: center; padding: 20px 0" *ngIf="titleOfTag != undefined">
+  <dx-chart palette="Dark Violet" [dataSource]="currentTag" palette="bright">
+    <dxo-title [text]="titleOfTag"> </dxo-title>
+    <dxo-common-series-settings
+      argumentField="key"
+      type="bar"
+      valueField="value"
+      [ignoreEmptyPoints]="true"
+    >
+    <dxo-label
+      [visible]="true"
+      [format]="{
+        type: 'fixedPoint',
+        precision: 0
+      }"
+    >
+    </dxo-label>
+    </dxo-common-series-settings>
+    <dxo-argument-axis>
+      <dxo-label [customizeText]="customizeText"></dxo-label>
+    </dxo-argument-axis>
+    <dxo-series-template nameField="key"></dxo-series-template>
+    <dxo-size [width]="1000"></dxo-size>
+  </dx-chart>
+</div>

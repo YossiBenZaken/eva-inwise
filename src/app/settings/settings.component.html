@@ -1,0 +1,85 @@
+<div class="row mt-2" dir="rtl">
+  <div class="col-6">
+    <dx-data-grid
+      [dataSource]="dataSource"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+      <dxi-column dataField="name" caption="תהליך"></dxi-column>
+      <dxi-column
+        caption="הפעל/כבה"
+        cellTemplate="sendBtns"
+        [allowFiltering]="false"
+        width="auto"
+        [allowEditing]="false"
+        [formItem]=""
+      >
+        <div *dxTemplate="let cell of 'sendBtns'" class="buttons">
+          <dx-switch (onValueChanged)="onValueChange(cell.data)" [value]="cell.data.status == 'DEPLOYED'" [rtlEnabled]="true" switchedOffText="כבוי" switchedOnText="דלוק"></dx-switch>
+        </div>
+      </dxi-column>
+    </dx-data-grid>
+    </div>
+  <div class="col-6">
+    <h3>הפצה כל 5 דקות</h3>
+    <dx-data-grid
+      [dataSource]="every5"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+    <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+    <dxo-summary>
+      <dxi-total-item column="name" summaryType="count"> </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </div>
+  <div class="col-6">
+    <h3>הפצה כל 10 דקות</h3>
+    <dx-data-grid
+      [dataSource]="every10"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+    <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+    <dxo-summary>
+      <dxi-total-item column="name" summaryType="count"> </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </div>
+  <div class="col-6">
+    <h3>הפצה כל 15 דקות</h3>
+    <dx-data-grid
+      [dataSource]="every15"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+    <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+    <dxo-summary>
+      <dxi-total-item column="name" summaryType="count"> </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </div>
+  <div class="col-6">
+    <h3>הפצה כל 30 דקות</h3>
+    <dx-data-grid
+      [dataSource]="every30"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+    <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+    <dxo-summary>
+      <dxi-total-item column="name" summaryType="count"> </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </div>
+</div>

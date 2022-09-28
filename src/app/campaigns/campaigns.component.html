@@ -1,0 +1,134 @@
+<div style="padding: 20px 0">
+  <dx-data-grid
+    [dataSource]="campaigns"
+    keyExpr="oldCode"
+    (onRowRemoved)="onRowRemoved($event)"
+    (onSaved)="onSaved($event)"
+    [rtlEnabled]="true"
+    [focusedRowEnabled]="true"
+    [showBorders]="true"
+    [showRowLines]="true"
+    [rowAlternationEnabled]="true"
+    [height]="400"
+  >
+    <dxo-scrolling mode="infinite"></dxo-scrolling>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-editing
+      mode="popup"
+      [allowUpdating]="canEdit"
+      [allowDeleting]="canDelete"
+    >
+      <dxo-form>
+        <dxi-item dataField="oldCode" caption="קוד ישן"></dxi-item>
+        <dxi-item dataField="newCode" caption="קוד חדש"></dxi-item>
+        <dxi-item dataField="letterName" caption="מספר מכתב"></dxi-item>
+        <dxi-item dataField="apiKey" caption="חשבון שולח">
+          <dxo-lookup [dataSource]="keys" displayExpr="Value" valueExpr="Key">
+          </dxo-lookup>
+        </dxi-item>
+        <dxi-item dataField="sender" caption="שם שולח"></dxi-item>
+        <dxi-item dataField="subject" caption="נושא"></dxi-item>
+        <dxi-item dataField="email" caption="אימייל"></dxi-item>
+        <dxi-item dataField="reply_to" caption="כתובת חזרה"></dxi-item>
+      </dxo-form>
+    </dxo-editing>
+    <dxi-column
+      caption=""
+      cellTemplate="sendBtns"
+      [allowFiltering]="false"
+      width="auto"
+      [allowEditing]="false"
+      [formItem]=""
+    >
+      <div *dxTemplate="let cell of 'sendBtns'" class="buttons">
+        <dx-button
+          text="שלח טסט"
+          (onClick)="sendTestPopup(cell.data)"
+        ></dx-button>
+      </div>
+    </dxi-column>
+    <dxi-column
+      dataField="oldCode"
+      caption="קוד ישן"
+      [allowEditing]="false"
+    ></dxi-column>
+    <dxi-column dataField="newCode" caption="קוד חדש"></dxi-column>
+    <dxi-column dataField="letterName" caption="מספר מכתב"></dxi-column>
+    <dxi-column dataField="apiKey" caption="חשבון שולח">
+      <dxo-lookup [dataSource]="keys" displayExpr="Value" valueExpr="Key">
+      </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="sender" caption="שם שולח"></dxi-column>
+    <dxi-column dataField="subject" caption="נושא"></dxi-column>
+    <dxi-column dataField="email" caption="אימייל"></dxi-column>
+    <dxi-column dataField="reply_to" caption="כתובת חזרה"></dxi-column>
+  </dx-data-grid>
+</div>
+<dx-popup
+  [width]="300"
+  [height]="200"
+  [showTitle]="true"
+  [rtlEnabled]="true"
+  title="למי לשלוח את הטסט?"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [showCloseButton]="true"
+  container=".dx-viewport"
+  [(visible)]="emailPopupVisible"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="center"
+    [options]="emailButtonOptions"
+    [disabled]="!isValidForm()"
+  ></dxi-toolbar-item>
+  <dxo-position at="center" my="center"> </dxo-position>
+  <div *dxTemplate="let data of 'content'">
+    <ng-container *ngIf="sending; else showEmails">
+      <dx-load-indicator height="60" width="60"></dx-load-indicator>
+    </ng-container>
+    <ng-template #showEmails>
+      <div class="dx-field" style="display: flex">
+        <div class="dx-field-label">אימייל</div>
+        <div class="dx-field-value">
+          <dx-text-box [(value)]="email" [showClearButton]="true"></dx-text-box>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</dx-popup>
+<dx-popup
+  [width]="300"
+  [height]="200"
+  [showTitle]="true"
+  [rtlEnabled]="true"
+  title="למי לשלוח את הטסט?"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [showCloseButton]="true"
+  container=".dx-viewport"
+  [(visible)]="phonePopupVisible"
+>
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="center"
+    [options]="phoneButtonOptions"
+    [disabled]="!isValidForm()"
+  ></dxi-toolbar-item>
+  <dxo-position at="center" my="center"> </dxo-position>
+  <div *dxTemplate="let data of 'content'">
+    <ng-container *ngIf="sending; else showPhone">
+      <dx-load-indicator height="60" width="60"></dx-load-indicator>
+    </ng-container>
+    <ng-template #showPhone>
+      <div class="dx-field" style="display: flex">
+        <div class="dx-field-label">פלאפון</div>
+        <div class="dx-field-value">
+          <dx-text-box [(value)]="phone" [showClearButton]="true"></dx-text-box>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</dx-popup>

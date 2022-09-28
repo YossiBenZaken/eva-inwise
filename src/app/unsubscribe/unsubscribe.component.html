@@ -1,0 +1,34 @@
+<dx-select-box
+  #selectBox
+  [dataSource]="keys"
+  displayExpr="Value"
+  valueExpr="Key"
+  [rtlEnabled]="true"
+  [searchEnabled]="true"
+  label="חשבון שולח"
+  (onValueChanged)="getList($event)"
+  labelMode="floating"
+></dx-select-box>
+<div style="padding: 20px 0" *ngIf="selectBox.value && !loadingList">
+  <dx-button text="רענן מוסרים" (onClick)="getList(selectBox)"></dx-button>
+  <dx-data-grid
+    [dataSource]="list"
+    keyExpr="id"
+    [focusedRowEnabled]="true"
+    [showBorders]="true"
+    [height]="300"
+    [rtlEnabled]="true"
+    [showRowLines]="true"
+    [columnAutoWidth]="true"
+  >
+    <dxo-scrolling mode="infinite"></dxo-scrolling>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxi-column dataField="target" caption="אימייל"></dxi-column>
+    <dxi-column dataField="timestamp" caption="זמן הסרה" dataType="datetime"></dxi-column>
+    <dxi-column cellTemplate="release" caption="" [allowFiltering]="false" [width]="100">
+      <div *dxTemplate="let cell of 'release'" class="buttons">
+        <dx-button (onClick)="Release(cell.data,selectBox.value)" text="שחרר"></dx-button>
+      </div>
+    </dxi-column>
+  </dx-data-grid>
+</div>

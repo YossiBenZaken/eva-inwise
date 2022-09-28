@@ -1,0 +1,26 @@
+ul.horizontal {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f3f3f3;
+  border: 1px solid #e7e7e7;
+  li {
+    float: right;
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    cursor: pointer;
+    &.active {
+      color: white;
+      background-color: #008cba;
+    }
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+  li.leftLi {
+    float: left;
+  }
+}

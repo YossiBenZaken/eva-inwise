@@ -1,0 +1,47 @@
+<dx-select-box
+  #selectBox
+  [dataSource]="keys"
+  displayExpr="Value"
+  valueExpr="Key"
+  [rtlEnabled]="true"
+  [searchEnabled]="true"
+  label="חשבון שולח"
+  (onValueChanged)="getTags($event)"
+  labelMode="floating"
+></dx-select-box>
+<div style="padding: 20px 0" *ngIf="selectBox.value">
+  <dx-data-grid
+    [dataSource]="dataSource"
+    keyExpr="fileName"
+    [focusedRowEnabled]="true"
+    [showBorders]="true"
+    [height]="300"
+    [rtlEnabled]="true"
+    [showRowLines]="true"
+    [columnAutoWidth]="true"
+  >
+    <dxo-scrolling mode="infinite"></dxo-scrolling>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+    <dxi-column dataField="fileName" caption="שם קובץ"></dxi-column>
+    <dxi-column
+      dataField="date"
+      dataType="datetime"
+      caption="נשלח"
+    ></dxi-column>
+    <dxi-column
+    caption=""
+    cellTemplate="details"
+    [allowFiltering]="false"
+    [width]="200"
+  >
+    <div *dxTemplate="let cell of 'details'" class="buttons">
+      <dx-button
+        icon="download"
+        type="success"
+        (onClick)="getReport(cell.data)"
+      ></dx-button>
+    </div>
+  </dxi-column>
+  </dx-data-grid>
+</div>

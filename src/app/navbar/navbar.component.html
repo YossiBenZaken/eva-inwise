@@ -1,0 +1,13 @@
+<nav>
+  <ul class="horizontal">
+    <li routerLinkActive="active" routerLink="/templates">תבניות</li>
+    <li routerLinkActive="active" routerLink="/files" *ngIf="isLogged()">עמוד הפצה</li>
+    <li routerLinkActive="active" routerLink="/tags" *ngIf="isLogged()">פירוט הפצות</li>
+    <li routerLinkActive="active" routerLink="/smsReports" *ngIf="isLogged()">דוחות סמסים</li>
+    <li routerLinkActive="active" routerLink="/unsubscribe" *ngIf="isLogged()">מוסרים</li>
+    <li routerLinkActive="active" routerLink="/settings" *ngIf="isLogged()">הגדרות</li>
+    <li routerLinkActive="active" routerLink="/login" *ngIf="!isLogged()">התחברות</li>
+    <li (click)="Logout()" *ngIf="isLogged()">התנתק</li>
+    <img src="/assets/logo.png" height="45" style="padding-left: 15px;">
+  </ul>
+</nav>
