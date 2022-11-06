@@ -15,7 +15,8 @@ import {
   DxLoadIndicatorModule,
   DxPopupModule,
   DxSwitchModule,
-  DxNumberBoxModule
+  DxNumberBoxModule,
+  DxAccordionModule,
 } from 'devextreme-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { CampaignsComponent } from './campaigns/campaigns.component';
@@ -27,6 +28,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SmsReportComponent } from './sms-report/sms-report.component';
 import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
 import { SettingsComponent } from './settings/settings.component';
+import { QaComponent } from './qa/qa.component';
 
 @NgModule({
   declarations: [
@@ -40,10 +42,12 @@ import { SettingsComponent } from './settings/settings.component';
     NavbarComponent,
     SmsReportComponent,
     UnsubscribeComponent,
-      SettingsComponent
-   ],
+    SettingsComponent,
+    QaComponent,
+  ],
   imports: [
     BrowserModule,
+    DxAccordionModule,
     DxRadioGroupModule,
     DxTextBoxModule,
     DxSelectBoxModule,
@@ -81,15 +85,20 @@ import { SettingsComponent } from './settings/settings.component';
         },
         {
           path: 'smsReports',
-          component: SmsReportComponent
-        },{
+          component: SmsReportComponent,
+        },
+        {
           path: 'unsubscribe',
-          component: UnsubscribeComponent
+          component: UnsubscribeComponent,
         },
         {
           path: 'settings',
-          component: SettingsComponent
-        }
+          component: SettingsComponent,
+        },
+        {
+          path: 'QA',
+          component: QaComponent,
+        },
       ],
       {
         useHash: true,

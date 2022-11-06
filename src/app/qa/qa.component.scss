@@ -1,0 +1,20 @@
+::ng-deep #accordion h1 {
+  font-size: 20px;
+}
+
+::ng-deep #accordion h1,
+::ng-deep #accordion p {
+  margin: 0;
+}
+::ng-deep .dx-theme-material #accordion .dx-accordion-item-title {
+  display: flex;
+}
+::ng-deep .dx-theme-material #accordion h1 {
+  align-self: center;
+}
+#accordion {
+  margin-top: 1em;
+}
+::ng-deep #accordion ul {
+  list-style: decimal;
+}

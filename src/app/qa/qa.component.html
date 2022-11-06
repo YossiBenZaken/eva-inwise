@@ -1,0 +1,17 @@
+<div id="accordion">
+  <dx-accordion
+  [dataSource]="questions"
+  [collapsible]="true"
+  [multiple]="true"
+  [rtlEnabled]="true"
+  [selectedIndex]="-1"
+  [animationDuration]="300">
+  <div *dxTemplate="let question of 'title'">
+    <h1>{{question.question}}</h1>
+  </div>
+  <div *dxTemplate="let question of 'item'">
+    <p [outerHTML]="question.answer">
+    </p>
+  </div>
+  </dx-accordion>
+</div>

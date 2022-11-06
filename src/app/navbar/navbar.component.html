@@ -5,6 +5,7 @@
     <li routerLinkActive="active" routerLink="/tags" *ngIf="isLogged()">פירוט הפצות</li>
     <li routerLinkActive="active" routerLink="/smsReports" *ngIf="isLogged()">דוחות סמסים</li>
     <li routerLinkActive="active" routerLink="/unsubscribe" *ngIf="isLogged()">מוסרים</li>
+    <li routerLinkActive="active" routerLink="/QA" *ngIf="isLogged()">שאלות תשובות</li>
     <li routerLinkActive="active" routerLink="/settings" *ngIf="isLogged()">הגדרות</li>
     <li routerLinkActive="active" routerLink="/login" *ngIf="!isLogged()">התחברות</li>
     <li (click)="Logout()" *ngIf="isLogged()">התנתק</li>
