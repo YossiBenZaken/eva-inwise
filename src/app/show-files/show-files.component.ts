@@ -37,7 +37,8 @@ export class ShowFilesComponent implements OnInit {
     },
     { name: '10 דקות', id: 1, value: '10' },
     { name: 'רבע שעה', id: 2, value: '15' },
-    { name: 'חצי שעה', id: 3, value: '30' },
+    { name: '20 דקות', id: 3, value: '20' },
+    { name: 'חצי שעה', id: 4, value: '30' },
   ];
   selectedTime = '';
   selectedStart = 15;

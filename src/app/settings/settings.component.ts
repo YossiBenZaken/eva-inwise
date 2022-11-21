@@ -13,6 +13,7 @@ export class SettingsComponent implements OnInit {
   every5: FileName[] = [];
   every10: FileName[] = [];
   every15: FileName[] = [];
+  every20: FileName[] = [];
   every30: FileName[] = [];
   constructor(private _appService: AppService) { }
   ngOnInit() {
@@ -23,6 +24,7 @@ export class SettingsComponent implements OnInit {
       this.every5 = files.every5;
       this.every10 = files.every10;
       this.every15 = files.every15;
+      this.every20 = files.every20;
       this.every30 = files.every30;
     })
   }

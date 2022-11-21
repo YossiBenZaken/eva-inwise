@@ -68,6 +68,21 @@
     </dx-data-grid>
   </div>
   <div class="col-6">
+    <h3>הפצה כל 20 דקות</h3>
+    <dx-data-grid
+      [dataSource]="every20"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+    <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+    <dxo-summary>
+      <dxi-total-item column="name" summaryType="count"> </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </div>
+  <div class="col-6">
     <h3>הפצה כל 30 דקות</h3>
     <dx-data-grid
       [dataSource]="every30"

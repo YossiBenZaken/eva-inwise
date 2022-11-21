@@ -3,6 +3,7 @@ export interface Files {
   every5: FileName[],
   every10: FileName[],
   every15: FileName[],
+  every20: FileName[],
   every30: FileName[],
 }
 export interface FileName {
