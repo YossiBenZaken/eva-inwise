@@ -15,6 +15,7 @@ export class SettingsComponent implements OnInit {
   every15: FileName[] = [];
   every20: FileName[] = [];
   every30: FileName[] = [];
+  everyHour: FileName[] = [];
   constructor(private _appService: AppService) { }
   ngOnInit() {
     this._appService.deploymentList().subscribe((value) => {
@@ -26,6 +27,7 @@ export class SettingsComponent implements OnInit {
       this.every15 = files.every15;
       this.every20 = files.every20;
       this.every30 = files.every30;
+      this.everyHour = files.everyHour;
     })
   }
   onValueChange(e: Workflow) {

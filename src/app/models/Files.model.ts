@@ -5,6 +5,7 @@ export interface Files {
   every15: FileName[],
   every20: FileName[],
   every30: FileName[],
+  everyHour: FileName[],
 }
 export interface FileName {
   name:string;
