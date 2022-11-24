@@ -1,11 +1,28 @@
-import { Campaign } from './../models/Campaign.model';
-import { AppService } from './../app.service';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import {
+  DxButtonModule,
+  DxDataGridModule,
+  DxLoadIndicatorModule,
+  DxPopupModule,
+  DxTextBoxModule,
+} from 'devextreme-angular';
+import { AppService } from './../app.service';
+import { Campaign } from './../models/Campaign.model';
 
 @Component({
   selector: 'app-campaigns',
   templateUrl: './campaigns.component.html',
   styleUrls: ['./campaigns.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxDataGridModule,
+    DxButtonModule,
+    DxPopupModule,
+    DxLoadIndicatorModule,
+    DxTextBoxModule,
+  ],
 })
 export class CampaignsComponent implements OnInit {
   @Input('canEdit') canEdit: boolean = false;
@@ -53,7 +70,7 @@ export class CampaignsComponent implements OnInit {
     });
   }
   onSaved(e: any) {
-    console.log(e)
+    console.log(e);
     if (e.changes[0]) {
       let data = e.changes[0].data;
       this._appService.updateCampaign(data).subscribe(() => {
@@ -82,13 +99,13 @@ export class CampaignsComponent implements OnInit {
             name: 'טסט טסט',
           },
         ],
-        apiKey: current.apiKey
+        apiKey: current.apiKey,
       };
     } else {
       body = {
         code: current.newCode,
         apiKey: current.apiKey,
-        mobile_number: this.phone
+        mobile_number: this.phone,
       };
     }
     this._appService.sendTestCampaign(body, type).subscribe((res) => {

@@ -1,11 +1,28 @@
-import { Tag } from './../models/Tags.model';
-import { AppService } from './../app.service';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import {
+  DxButtonModule,
+  DxChartModule,
+  DxDataGridModule,
+  DxLoadIndicatorModule,
+  DxSelectBoxModule,
+} from 'devextreme-angular';
+import { AppService } from './../app.service';
+import { Tag } from './../models/Tags.model';
 
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxSelectBoxModule,
+    DxDataGridModule,
+    DxButtonModule,
+    DxLoadIndicatorModule,
+    DxChartModule,
+  ],
 })
 export class TagsComponent {
   keys: { Key: string; Value: string }[] = [];

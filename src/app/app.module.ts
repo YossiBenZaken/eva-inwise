@@ -1,67 +1,15 @@
-import { HomeComponent } from './home/home.component';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { AddCampaignComponent } from './add-campaign/add-campaign.component';
-import {
-  DxRadioGroupModule,
-  DxTextBoxModule,
-  DxSelectBoxModule,
-  DxButtonModule,
-  DxDataGridModule,
-  DxToastModule,
-  DxChartModule,
-  DxLoadIndicatorModule,
-  DxPopupModule,
-  DxSwitchModule,
-  DxNumberBoxModule,
-  DxAccordionModule,
-} from 'devextreme-angular';
-import { HttpClientModule } from '@angular/common/http';
-import { CampaignsComponent } from './campaigns/campaigns.component';
 import { RouterModule } from '@angular/router';
-import { ShowFilesComponent } from './show-files/show-files.component';
-import { LoginComponent } from './login/login.component';
-import { TagsComponent } from './tags/tags.component';
+import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SmsReportComponent } from './sms-report/sms-report.component';
-import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
-import { SettingsComponent } from './settings/settings.component';
-import { QaComponent } from './qa/qa.component';
-import { DistributionAtFourComponent } from './distribution-at-four/distribution-at-four.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AddCampaignComponent,
-    CampaignsComponent,
-    ShowFilesComponent,
-    HomeComponent,
-    LoginComponent,
-    TagsComponent,
-    NavbarComponent,
-    SmsReportComponent,
-    UnsubscribeComponent,
-    SettingsComponent,
-    QaComponent,
-      DistributionAtFourComponent
-   ],
+  declarations: [AppComponent, NavbarComponent],
   imports: [
     BrowserModule,
-    DxAccordionModule,
-    DxRadioGroupModule,
-    DxTextBoxModule,
-    DxSelectBoxModule,
-    DxLoadIndicatorModule,
-    DxButtonModule,
     HttpClientModule,
-    DxChartModule,
-    DxDataGridModule,
-    DxToastModule,
-    DxPopupModule,
-    DxSwitchModule,
-    DxNumberBoxModule,
     RouterModule.forRoot(
       [
         {
@@ -71,39 +19,58 @@ import { DistributionAtFourComponent } from './distribution-at-four/distribution
         },
         {
           path: 'templates',
-          component: HomeComponent,
+          loadComponent: () =>
+            import('./home/home.component').then((m) => m.HomeComponent),
         },
         {
           path: 'files',
-          component: ShowFilesComponent,
+          loadComponent: () =>
+            import('./show-files/show-files.component').then(
+              (m) => m.ShowFilesComponent
+            ),
         },
         {
           path: 'tags',
-          component: TagsComponent,
+          loadComponent: () =>
+            import('./tags/tags.component').then((m) => m.TagsComponent),
         },
         {
           path: 'login',
-          component: LoginComponent,
+          loadComponent: () =>
+            import('./login/login.component').then((m) => m.LoginComponent),
         },
         {
           path: 'smsReports',
-          component: SmsReportComponent,
+          loadComponent: () =>
+            import('./sms-report/sms-report.component').then(
+              (m) => m.SmsReportComponent
+            ),
         },
         {
           path: 'unsubscribe',
-          component: UnsubscribeComponent,
+          loadComponent: () =>
+            import('./unsubscribe/unsubscribe.component').then(
+              (m) => m.UnsubscribeComponent
+            ),
         },
         {
           path: 'settings',
-          component: SettingsComponent,
+          loadChildren: () =>
+            import('./settings/settings.component').then(
+              (m) => m.SettingsComponent
+            ),
         },
         {
           path: 'QA',
-          component: QaComponent,
+          loadComponent: () =>
+            import('./qa/qa.component').then((m) => m.QaComponent),
         },
         {
           path: 'DA4',
-          component: DistributionAtFourComponent,
+          loadComponent: () =>
+            import(
+              './distribution-at-four/distribution-at-four.component'
+            ).then((m) => m.DistributionAtFourComponent),
         },
       ],
       {

@@ -1,11 +1,28 @@
-import { Campaign } from './../models/Campaign.model';
-import { AppService } from './../app.service';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import {
+  DxButtonModule,
+  DxRadioGroupModule,
+  DxSelectBoxModule,
+  DxTextBoxModule,
+  DxToastModule,
+} from 'devextreme-angular';
+import { AppService } from './../app.service';
+import { Campaign } from './../models/Campaign.model';
 
 @Component({
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
   styleUrls: ['./add-campaign.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxRadioGroupModule,
+    DxTextBoxModule,
+    DxSelectBoxModule,
+    DxButtonModule,
+    DxToastModule,
+  ],
 })
 export class AddCampaignComponent {
   @Input('canAdded') canAdded: boolean = false;
@@ -117,7 +134,7 @@ export class AddCampaignComponent {
           letterName: '',
         };
       },
-      error: () =>  {
+      error: () => {
         this.message = 'היה בעיה בהוספת תבנית';
         this.typeAlert = 'error';
         this.isVisible = true;

@@ -1,10 +1,21 @@
-import { AppService } from './../app.service';
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { AddCampaignComponent } from '../add-campaign/add-campaign.component';
+import { CampaignsComponent } from '../campaigns/campaigns.component';
+import { ShowFilesComponent } from '../show-files/show-files.component';
+import { AppService } from './../app.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    AddCampaignComponent,
+    CampaignsComponent,
+    ShowFilesComponent,
+  ],
 })
 export class HomeComponent {
   params = {

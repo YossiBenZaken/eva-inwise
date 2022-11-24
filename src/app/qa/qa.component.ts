@@ -1,10 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { DxAccordionModule } from 'devextreme-angular';
 import { Question } from '../models/Question.model';
 
 @Component({
   selector: 'app-qa',
   templateUrl: './qa.component.html',
   styleUrls: ['./qa.component.scss'],
+  standalone: true,
+  imports: [CommonModule, DxAccordionModule],
 })
 export class QaComponent {
   questions: Question[] = [

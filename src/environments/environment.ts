@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'https://ol-bk-app1:30600/rest/api/submit-job'
+  serverUrl: 'https://www.digitalnow.co.il/api',
+  // serverUrl: 'https://ol-bk-app1:30600/rest/api/submit-job'
 };
 
 /*

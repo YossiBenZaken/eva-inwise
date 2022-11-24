@@ -1,12 +1,37 @@
-import { Traces } from './../models/Search.model';
-import { FileName } from './../models/Files.model';
-import { AppService } from './../app.service';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as bytes from 'bytes';
+import {
+  DxButtonModule,
+  DxDataGridModule,
+  DxLoadIndicatorModule,
+  DxNumberBoxModule,
+  DxPopupModule,
+  DxRadioGroupModule,
+  DxSelectBoxModule,
+  DxTextBoxModule,
+  DxToastModule,
+} from 'devextreme-angular';
+import { AppService } from './../app.service';
+import { FileName } from './../models/Files.model';
+import { Traces } from './../models/Search.model';
 @Component({
   selector: 'app-show-files',
   templateUrl: './show-files.component.html',
   styleUrls: ['./show-files.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxDataGridModule,
+    DxButtonModule,
+    DxToastModule,
+    DxPopupModule,
+    DxRadioGroupModule,
+    DxTextBoxModule,
+    DxSelectBoxModule,
+    DxNumberBoxModule,
+    DxLoadIndicatorModule,
+  ],
 })
 export class ShowFilesComponent implements OnInit {
   files: FileName[] = [];
@@ -45,7 +70,7 @@ export class ShowFilesComponent implements OnInit {
   selectedStart = 15;
   selectedEnd = 15;
   splitFile = 0;
-  selectedFile = ''
+  selectedFile = '';
   constructor(private _appService: AppService) {
     const that = this;
     this.emailButtonOptions = {
@@ -61,17 +86,25 @@ export class ShowFilesComponent implements OnInit {
       icon: '',
       text: 'שלח לפיצול',
       onClick: (e: any) => {
-        this._appService.changeEnv(this.selectedStart,this.selectedEnd,this.sendTime[Number(this.selectedTime)].value).subscribe(() => {
-          this.splitVisible = false;
-          alert('אל תשכח/י להפעיל בהגדרות את התהליך הרצוי')
-          this._appService.splitFile(
-            this.sendTime[Number(this.selectedTime)].value,
-            this.splitFile,
-            this.selectedFile
-          ).subscribe(() => {
-            this.getFiles();
+        this._appService
+          .changeEnv(
+            this.selectedStart,
+            this.selectedEnd,
+            this.sendTime[Number(this.selectedTime)].value
+          )
+          .subscribe(() => {
+            this.splitVisible = false;
+            alert('אל תשכח/י להפעיל בהגדרות את התהליך הרצוי');
+            this._appService
+              .splitFile(
+                this.sendTime[Number(this.selectedTime)].value,
+                this.splitFile,
+                this.selectedFile
+              )
+              .subscribe(() => {
+                this.getFiles();
+              });
           });
-        })
       },
     };
     this.moreButtonOptions = {
@@ -119,12 +152,19 @@ export class ShowFilesComponent implements OnInit {
   }
   getSearch() {
     this._appService.jobList().subscribe((res) => {
-      this.jobList = res.traces.filter((trace) => trace.customJobId != '' || (trace.workflowReference.id == 'TWVpLUF2aXZpbS9NQSBJbnZvaWNlIFB1c2ggTkVX')).map(trace => {
-        if(trace.customJobId == '') {
-          trace.customJobId = trace.workflowReference.name;
-        }
-        return trace
-      });
+      this.jobList = res.traces
+        .filter(
+          (trace) =>
+            trace.customJobId != '' ||
+            trace.workflowReference.id ==
+              'TWVpLUF2aXZpbS9NQSBJbnZvaWNlIFB1c2ggTkVX'
+        )
+        .map((trace) => {
+          if (trace.customJobId == '') {
+            trace.customJobId = trace.workflowReference.name;
+          }
+          return trace;
+        });
     });
   }
   sendTestPopup(data: FileName) {
