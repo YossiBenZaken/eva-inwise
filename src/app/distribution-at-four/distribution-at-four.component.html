@@ -1,0 +1,17 @@
+<div class="row mt-2" dir="rtl">
+  <div class="col-12">
+    <dx-data-grid
+      [dataSource]="da4"
+      [rtlEnabled]="true"
+      [showBorders]="true"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+    >
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxi-column dataField="name" caption="שם קובץ"></dxi-column>
+    <dxo-summary>
+      <dxi-total-item column="name" summaryType="count"> </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </div>
+</div>

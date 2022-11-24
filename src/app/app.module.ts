@@ -29,6 +29,7 @@ import { SmsReportComponent } from './sms-report/sms-report.component';
 import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
 import { SettingsComponent } from './settings/settings.component';
 import { QaComponent } from './qa/qa.component';
+import { DistributionAtFourComponent } from './distribution-at-four/distribution-at-four.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { QaComponent } from './qa/qa.component';
     UnsubscribeComponent,
     SettingsComponent,
     QaComponent,
-  ],
+      DistributionAtFourComponent
+   ],
   imports: [
     BrowserModule,
     DxAccordionModule,
@@ -98,6 +100,10 @@ import { QaComponent } from './qa/qa.component';
         {
           path: 'QA',
           component: QaComponent,
+        },
+        {
+          path: 'DA4',
+          component: DistributionAtFourComponent,
         },
       ],
       {

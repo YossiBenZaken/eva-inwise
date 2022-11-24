@@ -6,11 +6,17 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
-
-  constructor(private _router: Router) { }
+export class NavbarComponent implements OnInit {
+  constructor(private _router: Router) {
+   }
+   ngOnInit(): void {
+  }
   isLogged() {
     return !!localStorage.getItem('currentUser')
+  }
+  isAdmin() {
+    return localStorage.getItem('currentUser') == 'eva';
+
   }
   Logout() {
     localStorage.clear();
