@@ -1,9 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { Routes } from '@angular/router';
 
 export const AppRoutes: Routes = [
   {
@@ -64,11 +59,3 @@ export const AppRoutes: Routes = [
       ),
   },
 ];
-
-@NgModule({
-  declarations: [],
-  imports: [BrowserModule],
-  providers: [],
-  bootstrap: [],
-})
-export class AppModule {}

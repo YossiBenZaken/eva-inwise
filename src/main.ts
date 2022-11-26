@@ -5,7 +5,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app/app.component';
 
-import { AppModule, AppRoutes } from './app/app.module';
+import { AppRoutes } from './app/app-routing.module';
 import { environment } from './environments/environment';
 
 if (environment.production) {
