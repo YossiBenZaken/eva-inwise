@@ -1,13 +1,15 @@
 .container {
-  animation: loginForm 2s normal forwards ease-in-out;
   margin: 0;
   padding: 0;
-  display: grid;
-  place-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
   .loginForm {
     box-shadow: 0 0 13px 0 rgba($color: #000000, $alpha: 0.5);
     padding: 25px;
     direction: rtl;
+    width: 500px;
     input {
       outline: none;
       font-size: 18px;
@@ -22,12 +24,5 @@
       font-weight: bold;
     }
   }
-}
-@keyframes loginForm {
-  0% {
-    min-height: 10px;
-  }
-  100% {
-    min-height: 90vh;
-  }
+  min-height: 90vh;
 }

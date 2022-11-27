@@ -1,5 +1,8 @@
+import { TagService } from './../services/tag.service';
+import { ReportService } from './../services/report.service';
+import { JobService } from './../services/job.service';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   DxButtonModule,
   DxChartModule,
@@ -7,7 +10,7 @@ import {
   DxLoadIndicatorModule,
   DxSelectBoxModule,
 } from 'devextreme-angular';
-import { AppService } from './../app.service';
+import { AppService } from '../services/app.service';
 import { Tag } from './../models/Tags.model';
 
 @Component({
@@ -39,19 +42,24 @@ export class TagsComponent {
     { key: 'queued', value: 'Queued' },
     { key: 'cancelled', value: 'Cancelled' },
   ];
-  constructor(private _appService: AppService) {
+  constructor(
+    private _appService: AppService,
+    private _jobService: JobService,
+    private _reportService: ReportService,
+    private _tagService: TagService
+  ) {
     this.keys = this._appService.getKeys();
   }
   getTags(e: any) {
     this.tags = [];
     this.loadingTags = true;
-    this._appService.getTags(e.value).subscribe((res) => {
+    this._tagService.getTags(e.value).subscribe((res) => {
       this.tags = res.reverse();
       this.loadingTags = false;
     });
   }
   refreshTag(tag: string, apiKey: any) {
-    this._appService.refreshTag(tag, apiKey).subscribe((res: any) => {
+    this._tagService.refreshTag(tag, apiKey).subscribe((res: any) => {
       let arr = [];
       for (const key of Object.keys(res)) {
         if (key != 'tag' && key != 'stats') {
@@ -84,17 +92,17 @@ export class TagsComponent {
   }
   showDetails(data: Tag) {
     this.loading = true;
-    this._appService.getDetails(data.apiKey, data.tag).subscribe((res) => {
+    this._tagService.getDetails(data.apiKey, data.tag).subscribe((res) => {
       this.moreDetails = res;
       this.loading = false;
     });
   }
   getReport(data: Tag) {
     alert('בדקות הקרובות ישלח הדוח לייצור');
-    this._appService.getEmailReport(data.tag).subscribe(() => {});
+    this._reportService.getEmailReport(data.tag).subscribe(() => {});
   }
   getDetails(data: Tag) {
-    this._appService.jobDetails(data.tag).subscribe((res: any) => {
+    this._jobService.jobDetails(data.tag).subscribe((res: any) => {
       if (res.err) {
         alert('אין מידע');
       } else {

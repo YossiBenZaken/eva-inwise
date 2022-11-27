@@ -1,3 +1,6 @@
+import { CampaignService } from './../services/campaign.service';
+import { FilesService } from './../services/files.service';
+import { JobService } from './../services/job.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as bytes from 'bytes';
@@ -12,7 +15,6 @@ import {
   DxTextBoxModule,
   DxToastModule,
 } from 'devextreme-angular';
-import { AppService } from './../app.service';
 import { FileName } from './../models/Files.model';
 import { Traces } from './../models/Search.model';
 @Component({
@@ -71,7 +73,11 @@ export class ShowFilesComponent implements OnInit {
   selectedEnd = 15;
   splitFile = 0;
   selectedFile = '';
-  constructor(private _appService: AppService) {
+  constructor(
+    private _jobService: JobService,
+    private _filesService: FilesService,
+    private _campaignService: CampaignService
+  ) {
     const that = this;
     this.emailButtonOptions = {
       icon: 'email',
@@ -86,7 +92,7 @@ export class ShowFilesComponent implements OnInit {
       icon: '',
       text: 'שלח לפיצול',
       onClick: (e: any) => {
-        this._appService
+        this._jobService
           .changeEnv(
             this.selectedStart,
             this.selectedEnd,
@@ -95,7 +101,7 @@ export class ShowFilesComponent implements OnInit {
           .subscribe(() => {
             this.splitVisible = false;
             alert('אל תשכח/י להפעיל בהגדרות את התהליך הרצוי');
-            this._appService
+            this._filesService
               .splitFile(
                 this.sendTime[Number(this.selectedTime)].value,
                 this.splitFile,
@@ -129,15 +135,17 @@ export class ShowFilesComponent implements OnInit {
   }
   sendFile(fileName: string) {
     if (confirm('יש לאשר כדי לשלוח קובץ זה')) {
-      this._appService.sendFile(fileName, this.currentUser).subscribe((res) => {
-        this.isVisible = true;
-        this.files = res.files;
-      });
+      this._filesService
+        .sendFile(fileName, this.currentUser)
+        .subscribe((res) => {
+          this.isVisible = true;
+          this.files = res.files;
+        });
     }
   }
   deleteFile(fileName: string) {
     if (confirm('יש לאשר כדי למחוק קובץ זה')) {
-      this._appService
+      this._filesService
         .deleteFile(fileName, this.currentUser)
         .subscribe((res) => {
           this.isDeleteVisible = true;
@@ -146,12 +154,12 @@ export class ShowFilesComponent implements OnInit {
     }
   }
   getFiles() {
-    this._appService.getFiles(this.currentUser).subscribe((res) => {
+    this._filesService.getFiles(this.currentUser).subscribe((res) => {
       this.files = res.files;
     });
   }
   getSearch() {
-    this._appService.jobList().subscribe((res) => {
+    this._jobService.jobList().subscribe((res) => {
       this.jobList = res.traces
         .filter(
           (trace) =>
@@ -173,7 +181,7 @@ export class ShowFilesComponent implements OnInit {
   }
   sendExample(data: FileName) {
     if (confirm('הדוגמאות ישלחו בדקות הקרובות למייל שלך')) {
-      this._appService
+      this._campaignService
         .sendExample({
           user: this.currentUser,
           fileName: data.name,
@@ -200,7 +208,7 @@ export class ShowFilesComponent implements OnInit {
       emails: this.emails,
     };
     this.sending = true;
-    this._appService
+    this._campaignService
       .sendTest(request, this.selectedType == 'אימייל' ? '1' : '2')
       .subscribe((res) => {
         this.isVisible = true;

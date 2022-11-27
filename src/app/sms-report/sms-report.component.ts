@@ -1,11 +1,12 @@
+import { ReportService } from './../services/report.service';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   DxButtonModule,
   DxDataGridModule,
   DxSelectBoxModule,
 } from 'devextreme-angular';
-import { AppService } from '../app.service';
+import { AppService } from '../services/app.service';
 import { Report } from './../models/Report.model';
 
 @Component({
@@ -18,11 +19,11 @@ import { Report } from './../models/Report.model';
 export class SmsReportComponent {
   keys: { Key: string; Value: string }[] = [];
   dataSource: Report[] = [];
-  constructor(private _appService: AppService) {
+  constructor(private _appService: AppService, private _reportService: ReportService) {
     this.keys = this._appService.getKeys();
   }
   getTags(e: any) {
-    this._appService.getListReports(e.value).subscribe((res) => {
+    this._reportService.getListReports(e.value).subscribe((res) => {
       let result = res.map(
         (e: any) => (e = { ...e, date: new Date(Number(e.date)) })
       );
@@ -34,6 +35,6 @@ export class SmsReportComponent {
   }
   getReport(data: Report) {
     alert('בדקות הקרובות ישלח הדוח לייצור');
-    this._appService.getSmsReport(data.fileName).subscribe(() => {});
+    this._reportService.getSmsReport(data.fileName).subscribe(() => {});
   }
 }

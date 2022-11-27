@@ -1,8 +1,8 @@
+import { FilesService } from './../services/files.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DxDataGridModule } from 'devextreme-angular';
 import { FileName } from '../models/Files.model';
-import { AppService } from './../app.service';
 
 @Component({
   selector: 'app-distribution-at-four',
@@ -13,10 +13,10 @@ import { AppService } from './../app.service';
 })
 export class DistributionAtFourComponent implements OnInit {
   da4: FileName[] = [];
-  constructor(private _appService: AppService) {}
+  constructor(private _filesService: FilesService) {}
 
   ngOnInit() {
-    this._appService
+    this._filesService
       .getFiles(localStorage.getItem('currentUser')!)
       .subscribe((files) => {
         this.da4 = files.da4;

@@ -1,5 +1,6 @@
+import { CampaignService } from './../services/campaign.service';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   DxButtonModule,
   DxRadioGroupModule,
@@ -7,7 +8,7 @@ import {
   DxTextBoxModule,
   DxToastModule,
 } from 'devextreme-angular';
-import { AppService } from './../app.service';
+import { AppService } from '../services/app.service';
 import { Campaign } from './../models/Campaign.model';
 
 @Component({
@@ -112,13 +113,13 @@ export class AddCampaignComponent {
       Value: 'Not15',
     },
   ];
-  constructor(private _appService: AppService) {}
+  constructor(private _campaignService: CampaignService) {}
 
   valueChange(e: any) {
     this.campaign.subject += e.value;
   }
   click() {
-    this._appService.addCampaign(this.campaign).subscribe({
+    this._campaignService.addCampaign(this.campaign).subscribe({
       next: () => {
         this.message = 'נוסף בהצלחה';
         this.typeAlert = 'success';

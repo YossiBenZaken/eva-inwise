@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { AddCampaignComponent } from '../add-campaign/add-campaign.component';
 import { CampaignsComponent } from '../campaigns/campaigns.component';
 import { ShowFilesComponent } from '../show-files/show-files.component';
-import { AppService } from './../app.service';
+import { AppService } from '../services/app.service';
 
 @Component({
   selector: 'app-home',

@@ -1,7 +1,8 @@
+import { FilesService } from './../services/files.service';
+import { JobService } from './../services/job.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DxDataGridModule, DxSwitchModule } from 'devextreme-angular';
-import { AppService } from './../app.service';
 import { FileName } from './../models/Files.model';
 import { Workflow } from './../models/Workflow.model';
 
@@ -20,12 +21,12 @@ export class SettingsComponent implements OnInit {
   every20: FileName[] = [];
   every30: FileName[] = [];
   everyHour: FileName[] = [];
-  constructor(private _appService: AppService) {}
+  constructor(private _jobService: JobService, private _filesService: FilesService) {}
   ngOnInit() {
-    this._appService.deploymentList().subscribe((value) => {
+    this._jobService.deploymentList().subscribe((value) => {
       this.dataSource = value;
     });
-    this._appService
+    this._filesService
       .getFiles(localStorage.getItem('currentUser')!)
       .subscribe((files) => {
         this.every5 = files.every5;
@@ -37,7 +38,7 @@ export class SettingsComponent implements OnInit {
       });
   }
   onValueChange(e: Workflow) {
-    this._appService
+    this._jobService
       .updateDeployment(e.status == 'DEPLOYED' ? 'undeploy' : 'deploy', e.name)
       .subscribe((value) => {
         this.dataSource = value;

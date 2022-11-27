@@ -1,3 +1,4 @@
+import { CampaignService } from './../services/campaign.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import {
@@ -7,7 +8,6 @@ import {
   DxPopupModule,
   DxTextBoxModule,
 } from 'devextreme-angular';
-import { AppService } from './../app.service';
 import { Campaign } from './../models/Campaign.model';
 
 @Component({
@@ -37,7 +37,7 @@ export class CampaignsComponent implements OnInit {
   phone: string = '';
   sending: boolean = false;
   currentCampaign!: Campaign;
-  constructor(private _appService: AppService) {
+  constructor(private _campaignService: CampaignService) {
     const that = this;
     this.emailButtonOptions = {
       icon: 'email',
@@ -60,12 +60,12 @@ export class CampaignsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._appService.getCampaigns().subscribe((res) => {
+    this._campaignService.getCampaigns().subscribe((res) => {
       this.campaigns = res;
     });
   }
   onRowRemoved(e: any) {
-    this._appService.deleteCampaign(e.key).subscribe((res) => {
+    this._campaignService.deleteCampaign(e.key).subscribe((res) => {
       this.campaigns = res;
     });
   }
@@ -73,7 +73,7 @@ export class CampaignsComponent implements OnInit {
     console.log(e);
     if (e.changes[0]) {
       let data = e.changes[0].data;
-      this._appService.updateCampaign(data).subscribe(() => {
+      this._campaignService.updateCampaign(data).subscribe(() => {
         alert('עודכן');
       });
     }
@@ -108,7 +108,7 @@ export class CampaignsComponent implements OnInit {
         mobile_number: this.phone,
       };
     }
-    this._appService.sendTestCampaign(body, type).subscribe((res) => {
+    this._campaignService.sendTestCampaign(body, type).subscribe((res) => {
       this.emailPopupVisible = false;
       this.phonePopupVisible = false;
     });
