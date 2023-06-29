@@ -66,6 +66,10 @@ export class AppService {
         Key: '70dd9d618c7c419bb1d82adce979ba6e',
         Value: 'אורדע – מיתב',
       },
+      {
+        Key: '956054f608494ec7b14481485a474331',
+        Value: 'אורדע - תנובה '
+      },
     ].sort((a, b) => a.Value.localeCompare(b.Value));
   }
 }
