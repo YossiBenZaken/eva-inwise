@@ -7,6 +7,10 @@ export class AppService {
   getKeys() {
     return [
       {
+        Key: 'afcad93dd0be4778ac68b91f75c8d0cf',
+        Value: 'אורדע - מי הרצליה',
+      },
+      {
         Key: '673fa1397619414a8ba89c3e588738e9',
         Value: 'אורדע פרינט -מנורה',
       },
