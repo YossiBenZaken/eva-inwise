@@ -7,6 +7,14 @@ export class AppService {
   getKeys() {
     return [
       {
+        Key: '976d0762251f4873872e6a6f28991f55',
+        Value: 'אורדע - Worcare',
+      },
+      {
+        Key: '848f96445e1a48588fa27c4356f8f899',
+        Value: 'אורדע - בדיקות',
+      },
+      {
         Key: 'afcad93dd0be4778ac68b91f75c8d0cf',
         Value: 'אורדע - מי הרצליה',
       },
