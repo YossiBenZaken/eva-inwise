@@ -7,6 +7,10 @@ export class AppService {
   getKeys() {
     return [
       {
+        Key: '8d250c0482de4411bbd6a72d5ef2b8be',
+        Value: 'סונול גז +',
+      },
+      {
         Key: '976d0762251f4873872e6a6f28991f55',
         Value: 'אורדע - Worcare',
       },
