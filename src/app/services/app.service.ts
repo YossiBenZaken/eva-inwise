@@ -7,6 +7,14 @@ export class AppService {
   getKeys() {
     return [
       {
+        Key: '090fb752786a46fe910ed343d62d8c69',
+        Value: 'אורדע - מי שמש',
+      },
+      {
+        Key: 'fbd626138a264dcca2f607d821ed7eac',
+        Value: 'אורדע - הוד השרון',
+      },
+      {
         Key: '8d250c0482de4411bbd6a72d5ef2b8be',
         Value: ' אורדע סונול גז +',
       },
