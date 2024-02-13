@@ -7,6 +7,14 @@ export class AppService {
   getKeys() {
     return [
       {
+        Key: 'a08e645a290e461e8ce8f703b42c5048',
+        Value: 'אורדע - עין כרמים',
+      },
+      {
+        Key: 'e049f856de7f4aa38987a7c1eca9da5c',
+        Value: 'אורדע - נווה מדבר',
+      },
+      {
         Key: '3f98b64f2d9a4d1b89c211152b081bbb',
         Value: 'אורדע - הבאר השלישית',
       },
