@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
     return !!localStorage.getItem('currentUser');
   }
   isAdmin() {
-    return localStorage.getItem('currentUser') == 'eva';
+    return localStorage.getItem('currentUser') == 'eva' || localStorage.getItem('currentUser') == 'oranh';
   }
   Logout() {
     localStorage.clear();
