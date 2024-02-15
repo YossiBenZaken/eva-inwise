@@ -7,6 +7,10 @@ export class AppService {
   getKeys() {
     return [
       {
+        Key: '69f6ccdd873d4de7bba7235bacd5bd6c',
+        Value: 'אורדע - מי נתניה',
+      },
+      {
         Key: 'a08e645a290e461e8ce8f703b42c5048',
         Value: 'אורדע - עין כרמים',
       },
